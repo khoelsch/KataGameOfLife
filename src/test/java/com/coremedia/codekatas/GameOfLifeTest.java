@@ -89,4 +89,20 @@ public class GameOfLifeTest {
     gol = new GameOfLife(initial);
     assertGridsAreEqual(initial, gol.getGrid());
   }
+
+  @Test
+  public void testDefensiveCopyingOnConstruction() {
+    int[][] initial = {{1, 0, 0},
+                       {0, 0, 0},
+                       {0, 0, 0}};
+    int[][] initialCopy = {{1, 0, 0},
+                           {0, 0, 0},
+                           {0, 0, 0}};
+
+    gol = new GameOfLife(initial);
+    // change a value
+    initial[0][0] = 0;
+    // should have no effects
+    assertGridsAreEqual(initialCopy, gol.getGrid());
+  }
 }

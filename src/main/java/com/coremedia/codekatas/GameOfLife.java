@@ -44,7 +44,7 @@ public class GameOfLife {
   // the edge length of the grid in X
   private int dimY;
 
-  // the grid of life cells
+  // the grid of life cells, where an '0' represents a dead cell and a '1' living one
   private int[][] grid;
 
   public GameOfLife(int[][] initialGrid) {
@@ -52,7 +52,7 @@ public class GameOfLife {
 
     dimX = initialGrid.length;
     dimY = initialGrid[0].length;
-    grid = initialGrid;
+    grid = copyGrid(initialGrid);
   }
 
   /**
@@ -105,10 +105,14 @@ public class GameOfLife {
    * @return a copy of the game's grid
    */
   public int[][] getGrid() {
+    return copyGrid(grid);
+  }
+
+  private int[][] copyGrid(int[][] srcGrid) {
     int[][] gridCopy = new int[dimX][dimY];
 
     for (int xCoord = 0; (xCoord < dimX); ++xCoord) {
-      System.arraycopy(grid[xCoord], 0, gridCopy[xCoord], 0, dimY);
+      System.arraycopy(srcGrid[xCoord], 0, gridCopy[xCoord], 0, dimY);
     }
 
     return gridCopy;
@@ -127,7 +131,7 @@ public class GameOfLife {
     final int firstLengthY = initialGrid[0].length;
     for (int[] yCol : initialGrid) {
       if (yCol.length != firstLengthY) {
-        throw new IllegalArgumentException("All lines of the grid must have the same length!");
+        throw new IllegalArgumentException("All lines of the grid must have the same length.");
       }
     }
   }
