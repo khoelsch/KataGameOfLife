@@ -39,15 +39,15 @@ public class GameOfLife {
   }
 
   // the edge length of the grid in X
-  private int dimX;
+  private final int dimX;
 
   // the edge length of the grid in X
-  private int dimY;
+  private final int dimY;
 
   // the grid of life cells, where an '0' represents a dead cell and a '1' living one
   private int[][] grid;
 
-  public GameOfLife(int[][] initialGrid) {
+  public GameOfLife(final int[][] initialGrid) {
     validateGrid(initialGrid);
 
     dimX = initialGrid.length;
@@ -72,7 +72,7 @@ public class GameOfLife {
     }
   }
 
-  private int countLivingNeighborCells(int xCoord, int yCoord) {
+  private int countLivingNeighborCells(final int xCoord, final int yCoord) {
     // count the living neighbor cells of the current cell
     int livingNeigbors = 0;
     // "run around cell"
@@ -94,7 +94,7 @@ public class GameOfLife {
     return livingNeigbors;
   }
 
-  private boolean validGridCoords(int xIndex, int yIndex) {
+  private boolean validGridCoords(final int xIndex, final int yIndex) {
     return xIndex >= 0
            && xIndex < dimX
            && yIndex >= 0
@@ -108,7 +108,7 @@ public class GameOfLife {
     return copyGrid(grid);
   }
 
-  private int[][] copyGrid(int[][] srcGrid) {
+  private int[][] copyGrid(final int[][] srcGrid) {
     int[][] gridCopy = new int[dimX][dimY];
 
     for (int xCoord = 0; (xCoord < dimX); ++xCoord) {
@@ -127,7 +127,7 @@ public class GameOfLife {
    *
    * @throws IllegalArgumentException
    */
-  private static void validateGrid(int[][] initialGrid) throws IllegalArgumentException {
+  private static void validateGrid(final int[][] initialGrid) throws IllegalArgumentException {
     final int firstLengthY = initialGrid[0].length;
     for (int[] yCol : initialGrid) {
       if (yCol.length != firstLengthY) {
