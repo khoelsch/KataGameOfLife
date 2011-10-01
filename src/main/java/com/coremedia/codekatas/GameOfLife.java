@@ -58,27 +58,7 @@ public class GameOfLife {
     // walk grid and apply the rules on each cell
     for (int xCoord = 0; (xCoord < dimX); ++xCoord) {
       for (int yCoord = 0; (yCoord < dimY); ++yCoord ) {
-
-        // count the living neighbor cells of the current cell
-        int livingNeigbors = 0;
-        // "run around cell"
-        for (int xOffset = -1; xOffset<=1; ++xOffset) {
-          for (int yOffset = -1; yOffset<=1; ++yOffset) {
-
-            int xIndex = xOffset + xCoord;
-            int yIndex = yOffset + yCoord;
-            // ignore cells outside the grid
-            if ((xIndex < 0)
-                   || (xIndex >= dimX)
-                   || (yIndex < 0)
-                   || (yIndex >= dimY)) {
-              continue;
-            }
-
-            if (grid[xIndex][yIndex] == 1)
-            ++livingNeigbors;
-          }
-        }
+        int livingNeigbors = countLivingNeighborCells(xCoord, yCoord);
 
         Rule rule = Rule.RULE_ONE;
         if ( rule.applies(livingNeigbors) ) {
@@ -86,6 +66,35 @@ public class GameOfLife {
         }
       }
     }
+  }
+
+  private int countLivingNeighborCells(int xCoord, int yCoord) {
+    // count the living neighbor cells of the current cell
+    int livingNeigbors = 0;
+    // "run around cell"
+    for (int xOffset = -1; xOffset<=1; ++xOffset) {
+      for (int yOffset = -1; yOffset<=1; ++yOffset) {
+
+        int xIndex = xOffset + xCoord;
+        int yIndex = yOffset + yCoord;
+
+        // ignore cells outside the grid
+        if (!validGridCoords(xIndex, yIndex)) {
+          continue;
+        }
+
+        if (grid[xIndex][yIndex] == 1)
+        ++livingNeigbors;
+      }
+    }
+    return livingNeigbors;
+  }
+
+  private boolean validGridCoords(int xIndex, int yIndex) {
+    return xIndex >= 0
+           && xIndex < dimX
+           && yIndex >= 0
+           && yIndex < dimY;
   }
 
   public int[][] getGrid() {
