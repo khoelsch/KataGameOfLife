@@ -10,6 +10,12 @@ public class GameOfLifeTest {
 
   private GameOfLife gol;
 
+  private static void assertGridsAreEqual(int[][] expected, int[][] actual) {
+    for (int index = 0; index<actual.length; ++index) {
+      Assert.assertArrayEquals("Not equal at line index [" + index + "]", expected[index], actual[index]);
+    }
+  }
+
   @After
   public void tearDown() {
     gol = null;
@@ -26,6 +32,23 @@ public class GameOfLifeTest {
   @Test
   public void ruleOne_01() {
     int[][] initial = {{0, 0, 0},
+                       {0, 0, 0},
+                       {0, 0, 0}};
+
+    int[][] expected = {{0, 0, 0},
+                        {0, 0, 0},
+                        {0, 0, 0}};
+
+    gol = new GameOfLife(initial);
+    gol.iterate();
+    int[][] actual = gol.getGrid();
+
+    assertGridsAreEqual(expected, actual);
+  }
+
+  @Test
+  public void ruleOne_02() {
+    int[][] initial = {{0, 0, 0},
                        {0, 1, 0},
                        {0, 0, 0}};
 
@@ -37,8 +60,33 @@ public class GameOfLifeTest {
     gol.iterate();
     int[][] actual = gol.getGrid();
 
-    for (int index = 0; index<actual.length; ++index) {
-      Assert.assertArrayEquals("Not equal at line index [" +index+ "]", expected[index], actual[index]);
-    }
+    assertGridsAreEqual(expected, actual);
+  }
+
+  @Test
+  public void ruleOne_03() {
+    int[][] initial = {{0, 0, 0},
+                       {0, 1, 1},
+                       {0, 0, 0}};
+
+    int[][] expected = {{0, 0, 0},
+                        {0, 1, 1},
+                        {0, 0, 0}};
+
+    gol = new GameOfLife(initial);
+    gol.iterate();
+    int[][] actual = gol.getGrid();
+
+    assertGridsAreEqual(expected, actual);
+  }
+
+  @Test
+  public void testGetGrid() {
+    int[][] initial = {{1, 0, 1},
+                       {0, 1, 0},
+                       {1, 0, 1}};
+
+    gol = new GameOfLife(initial);
+    assertGridsAreEqual(initial, gol.getGrid());
   }
 }

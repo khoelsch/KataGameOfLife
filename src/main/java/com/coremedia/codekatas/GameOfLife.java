@@ -21,6 +21,10 @@ public class GameOfLife {
      * @param resultingCellState the life state of the cell, if the rule can be applied
      */
     Rule(int resultingCellState) {
+      if (!(resultingCellState == 0 || resultingCellState == 1)) {
+        throw new IllegalArgumentException("Parameter 'resultingCellState' must be '0' or '1'.");
+      }
+
       this.resultingState = resultingCellState;
     }
 
@@ -62,7 +66,7 @@ public class GameOfLife {
 
         Rule rule = Rule.RULE_ONE;
         if ( rule.applies(livingNeigbors) ) {
-          grid[xCoord][yCoord] = rule.resultingState;
+          grid[xCoord][yCoord] = rule.getResultingCellState();
         }
       }
     }
@@ -97,8 +101,17 @@ public class GameOfLife {
            && yIndex < dimY;
   }
 
+  /**
+   * @return a copy of the game's grid
+   */
   public int[][] getGrid() {
-    return grid;
+    int[][] gridCopy = new int[dimX][dimY];
+
+    for (int xCoord = 0; (xCoord < dimX); ++xCoord) {
+      System.arraycopy(grid[xCoord], 0, gridCopy[xCoord], 0, dimY);
+    }
+
+    return gridCopy;
   }
 
   /**
