@@ -1,7 +1,5 @@
 package com.coremedia.codekatas;
 
-import org.junit.Test;
-
 import java.util.EnumSet;
 
 /**
@@ -11,17 +9,22 @@ public class GameOfLife {
   public enum Rule {
     RULE_ONE(0) {
       // "Any live cell with fewer than two live neighbors dies, as if caused by underpopulation."
-      public boolean applies(final int livingNeighbors) { return (livingNeighbors < 2); };
+      public boolean applies(final int livingNeighbors) {
+        return (livingNeighbors < 2);
+      }
     },
 
     RULE_TWO(0) {
       // "Any live cell with more than three live neighbours dies, as if by overcrowding."
-      public boolean applies(int livingNeighbors) { return (livingNeighbors > 3); };
+      public boolean applies(int livingNeighbors) {
+        return (livingNeighbors > 3);
+      }
     };
 
     private final int resultingState;
 
     //
+
     /**
      * Constructor.
      *
@@ -40,9 +43,13 @@ public class GameOfLife {
      * @param livingNeighbors total number of living cells surrounding the current cell
      * @return TRUE if the rule is valid for the number of 'livingNeighbors', FALSE otherwise
      */
-     public abstract boolean applies(final int livingNeighbors);
+    public abstract boolean applies(final int livingNeighbors);
 
-     public int getResultingCellState() { return this.resultingState; };
+    public int getResultingCellState() {
+      return this.resultingState;
+    }
+
+    ;
   }
 
   // the edge length of the grid in X
@@ -93,8 +100,8 @@ public class GameOfLife {
 
     // scan 3x3 matrix around current cell
     // (from top left to bottom right)
-    for (int xOffset = -1; xOffset<=1; ++xOffset) {
-      for (int yOffset = -1; yOffset<=1; ++yOffset) {
+    for (int xOffset = -1; xOffset <= 1; ++xOffset) {
+      for (int yOffset = -1; yOffset <= 1; ++yOffset) {
 
         int xIndex = xOffset + xCoord;
         int yIndex = yOffset + yCoord;
@@ -117,9 +124,9 @@ public class GameOfLife {
 
   private boolean validGridCoords(final int xIndex, final int yIndex) {
     return xIndex >= 0
-           && xIndex < dimX
-           && yIndex >= 0
-           && yIndex < dimY;
+            && xIndex < dimX
+            && yIndex >= 0
+            && yIndex < dimY;
   }
 
   /**
@@ -140,12 +147,10 @@ public class GameOfLife {
   }
 
   /**
-   * any edge length in X is legal
-   *
-   * length of first Array dictates the edge length in Y
+   * - Any edge length in X direction is legal.
+   * - The length of the first Array in Y direction dictates the edge length of all following
    *
    * @param initialGrid
-   *
    * @throws IllegalArgumentException
    */
   private static void validateGrid(final int[][] initialGrid) throws IllegalArgumentException {
