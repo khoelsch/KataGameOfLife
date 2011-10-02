@@ -23,6 +23,10 @@ public class GameOfLifeTest {
     gol = null;
   }
 
+  //
+  // Tests for testing only ONE rule at a time
+  //
+
   @Test
   public void ruleOne_SingleIteration_01() {
     int[][] initial = {{0, 0, 0},
@@ -178,6 +182,38 @@ public class GameOfLifeTest {
                         {1, 0, 0}};
 
     gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_TWO));
+    gol.iterate();
+
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
+
+  @Test
+  public void ruleThree_SingleIteration_01() {
+    int[][] initial = {{0, 0, 0},
+                       {0, 0, 0},
+                       {0, 0, 0}};
+
+    int[][] expected = {{0, 0, 0},
+                        {0, 0, 0},
+                        {0, 0, 0}};
+
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_THREE));
+    gol.iterate();
+
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
+
+  @Test
+  public void ruleThree_SingleIteration_02() {
+    int[][] initial = {{0, 1, 1},
+                       {0, 1, 1},
+                       {0, 0, 0}};
+
+    int[][] expected = {{0, 1, 1},
+                        {0, 1, 1},
+                        {0, 0, 0}};
+
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_THREE));
     gol.iterate();
 
     assertGridsAreEqual(expected, gol.getGrid());

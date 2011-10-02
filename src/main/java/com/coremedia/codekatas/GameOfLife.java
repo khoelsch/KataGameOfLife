@@ -7,49 +7,58 @@ import java.util.EnumSet;
  */
 public class GameOfLife {
   public enum Rule {
-    RULE_ONE(0) {
-      // "Any live cell with fewer than two live neighbors dies, as if caused by underpopulation."
-      public boolean applies(final int livingNeighbors) {
-        return (livingNeighbors < 2);
+    // "Any live cell with fewer than two live neighbors dies, as if caused by underpopulation."
+    RULE_ONE(1, 0) {
+      public boolean applies(final int currentCellState, final int livingNeighbors) {
+        return currentCellState == applicationCellState
+                && livingNeighbors < 2;
       }
     },
 
-    RULE_TWO(0) {
-      // "Any live cell with more than three live neighbours dies, as if by overcrowding."
-      public boolean applies(int livingNeighbors) {
-        return (livingNeighbors > 3);
+    // "Any live cell with more than three live neighbours dies, as if by overcrowding."
+    RULE_TWO(1, 0) {
+      public boolean applies(final int currentCellState, final int livingNeighbors) {
+        return currentCellState == applicationCellState
+                && livingNeighbors > 3;
+      }
+    },
+
+    // "Any live cell with two or three live neighbours lives on to the next generation."
+    RULE_THREE(1, 1) {
+      public boolean applies(final int currentCellState, int livingNeighbors) {
+        return currentCellState == applicationCellState
+                && (livingNeighbors == 2 || livingNeighbors == 3);
       }
     };
 
+    protected final int applicationCellState;
     private final int resultingState;
-
-    //
 
     /**
      * Constructor.
      *
-     * @param resultingCellState the life state of the cell, if the rule can be applied
+     * @param applicationCellState the state of the cell, on which the rule can be applied
+     * @param resultingCellState   the life state of the cell, if the rule can be applied
      */
-    Rule(int resultingCellState) {
-      if (!(resultingCellState == 0 || resultingCellState == 1)) {
-        throw new IllegalArgumentException("Parameter 'resultingCellState' must be '0' or '1'.");
-      }
-
+    Rule(final int applicationCellState, final int resultingCellState) {
+      this.applicationCellState = applicationCellState;
       this.resultingState = resultingCellState;
     }
 
-
     /**
-     * @param livingNeighbors total number of living cells surrounding the current cell
+     * @param currentCellState state of the currently inspected live cell
+     * @param livingNeighbors  total number of living cells surrounding the current cell
      * @return TRUE if the rule is valid for the number of 'livingNeighbors', FALSE otherwise
      */
-    public abstract boolean applies(final int livingNeighbors);
+    public abstract boolean applies(final int currentCellState, final int livingNeighbors);
+
+    public int getApplicationCellState() {
+      return applicationCellState;
+    }
 
     public int getResultingCellState() {
       return this.resultingState;
     }
-
-    ;
   }
 
   // the edge length of the grid in X
@@ -83,7 +92,10 @@ public class GameOfLife {
     for (int xCoord = 0; (xCoord < dimX); ++xCoord) {
       for (int yCoord = 0; (yCoord < dimY); ++yCoord) {
         for (final Rule rule : ruleSet) {
-          if (rule.applies(countLivingNeighborCells(xCoord, yCoord))) {
+          final int currentCellState = grid[xCoord][yCoord];
+          final int totalLivingNeighbors = countLivingNeighborCells(xCoord, yCoord);
+
+          if (rule.applies(currentCellState, totalLivingNeighbors)) {
             newState[xCoord][yCoord] = rule.getResultingCellState();
           }
         }
