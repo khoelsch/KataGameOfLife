@@ -4,7 +4,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.coremedia.codekatas.GameOfLife;
+import static com.coremedia.codekatas.GameOfLife.Rule;
+
+import java.util.EnumSet;
 
 public class GameOfLifeTest {
 
@@ -22,7 +24,7 @@ public class GameOfLifeTest {
   }
 
   @Test
-  public void ruleOne_01() {
+  public void ruleOne_SingleIteration_01() {
     int[][] initial = {{0, 0, 0},
                        {0, 0, 0},
                        {0, 0, 0}};
@@ -31,15 +33,14 @@ public class GameOfLifeTest {
                         {0, 0, 0},
                         {0, 0, 0}};
 
-    gol = new GameOfLife(initial);
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_ONE));
     gol.iterate();
-    int[][] actual = gol.getGrid();
 
-    assertGridsAreEqual(expected, actual);
+    assertGridsAreEqual(expected, gol.getGrid());
   }
 
   @Test
-  public void ruleOne_02() {
+  public void ruleOne_SingleIteration_02() {
     int[][] initial = {{0, 0, 0},
                        {0, 1, 0},
                        {0, 0, 0}};
@@ -48,15 +49,14 @@ public class GameOfLifeTest {
                         {0, 0, 0},
                         {0, 0, 0}};
 
-    gol = new GameOfLife(initial);
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_ONE));
     gol.iterate();
-    int[][] actual = gol.getGrid();
 
-    assertGridsAreEqual(expected, actual);
+    assertGridsAreEqual(expected, gol.getGrid());
   }
 
   @Test
-  public void ruleOne_03() {
+  public void ruleOne_SingleIteration_03() {
     int[][] initial = {{0, 0, 0},
                        {0, 1, 1},
                        {0, 0, 0}};
@@ -65,15 +65,14 @@ public class GameOfLifeTest {
                         {0, 0, 0},
                         {0, 0, 0}};
 
-    gol = new GameOfLife(initial);
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_ONE));
     gol.iterate();
-    int[][] actual = gol.getGrid();
 
-    assertGridsAreEqual(expected, actual);
+    assertGridsAreEqual(expected, gol.getGrid());
   }
 
   @Test
-  public void ruleOne_04() {
+  public void ruleOne_SingleIteration_04() {
     int[][] initial = {{1, 0, 1},
                        {0, 1, 0},
                        {1, 0, 1}};
@@ -82,29 +81,107 @@ public class GameOfLifeTest {
                         {0, 1, 0},
                         {0, 0, 0}};
 
-    gol = new GameOfLife(initial);
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_ONE));
     gol.iterate();
-    int[][] actual = gol.getGrid();
 
-    assertGridsAreEqual(expected, actual);
+    assertGridsAreEqual(expected, gol.getGrid());
   }
 
-  /*@Test
-  public void ruleTwo_01() {
-    int[][] initial = {{0, 0, 0},
+  @Test
+  public void ruleTwo_SingleIteration_01() {
+    int[][] initial = {{1, 1, 1},
+                       {1, 1, 1},
+                       {1, 1, 1}};
+
+    int[][] expected = {{1, 0, 1},
+                        {0, 0, 0},
+                        {1, 0, 1}};
+
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_TWO));
+    gol.iterate();
+
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
+
+  @Test
+  public void ruleTwo_SingleIteration_02() {
+    int[][] initial = {{0, 0, 1},
+                       {0, 0, 1},
+                       {1, 1, 1}};
+
+    int[][] expected = {{0, 0, 1},
+                        {0, 0, 1},
+                        {1, 1, 1}};
+
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_TWO));
+    gol.iterate();
+
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
+
+  @Test
+  public void ruleTwo_SingleIteration_03() {
+    int[][] initial = {{0, 1, 1},
+                       {0, 1, 1},
+                       {0, 1, 0}};
+
+    int[][] expected = {{0, 1, 1},
+                        {0, 0, 0},
+                        {0, 1, 0}};
+
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_TWO));
+    gol.iterate();
+
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
+
+  @Test
+  public void ruleTwo_SingleIteration_04() {
+    int[][] initial = {{0, 0, 1},
                        {0, 1, 0},
+                       {1, 0, 0}};
+
+    int[][] expected = {{0, 0, 1},
+                        {0, 1, 0},
+                        {1, 0, 0}};
+
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_TWO));
+    gol.iterate();
+
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
+
+  @Test
+  public void ruleTwo_SingleIteration_05() {
+    int[][] initial = {{0, 0, 0},
+                       {0, 0, 0},
                        {0, 0, 0}};
 
     int[][] expected = {{0, 0, 0},
-                        {0, 1, 1},
+                        {0, 0, 0},
                         {0, 0, 0}};
 
-    gol = new GameOfLife(initial);
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_TWO));
     gol.iterate();
-    int[][] actual = gol.getGrid();
 
-    assertGridsAreEqual(expected, actual);
-  }*/
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
+
+  @Test
+  public void ruleTwo_SingleIteration_06() {
+    int[][] initial = {{0, 0, 1},
+                       {0, 1, 0},
+                       {1, 0, 0}};
+
+    int[][] expected = {{0, 0, 1},
+                        {0, 1, 0},
+                        {1, 0, 0}};
+
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_TWO));
+    gol.iterate();
+
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
 
   //
   // Tests, other than "rule tests"
@@ -115,7 +192,7 @@ public class GameOfLifeTest {
      int[][] grid = {{0, 0, 0},
                      {0, 0, 0},
                      {0, 0}};
-    gol = new GameOfLife(grid);
+    gol = new GameOfLife(grid, EnumSet.allOf(Rule.class));
   }
 
   @Test
@@ -124,7 +201,7 @@ public class GameOfLifeTest {
                        {0, 1, 0},
                        {1, 0, 1}};
 
-    gol = new GameOfLife(initial);
+    gol = new GameOfLife(initial, EnumSet.allOf(Rule.class));
     assertGridsAreEqual(initial, gol.getGrid());
   }
 
@@ -137,7 +214,7 @@ public class GameOfLifeTest {
                            {0, 0, 0},
                            {0, 0, 0}};
 
-    gol = new GameOfLife(initial);
+    gol = new GameOfLife(initial, EnumSet.allOf(Rule.class));
     // change a value
     initial[0][0] = 0;
     // should have no effects

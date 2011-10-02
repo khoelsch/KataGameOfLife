@@ -2,6 +2,8 @@ package com.coremedia.codekatas;
 
 import org.junit.Test;
 
+import java.util.EnumSet;
+
 /**
  * Implementation of Conway's Game of Life as specified by <a href="http://codingdojo.org/cgi-bin/wiki.pl?KataGameOfLife">Coding Dojo</a>.
  */
@@ -10,12 +12,12 @@ public class GameOfLife {
     RULE_ONE(0) {
       // "Any live cell with fewer than two live neighbors dies, as if caused by underpopulation."
       public boolean applies(final int livingNeighbors) { return (livingNeighbors < 2); };
-    }/*,
+    },
 
     RULE_TWO(0) {
       // "Any live cell with more than three live neighbours dies, as if by overcrowding."
       public boolean applies(int livingNeighbors) { return (livingNeighbors > 3); };
-    }*/;
+    };
 
     private final int resultingState;
 
@@ -52,12 +54,16 @@ public class GameOfLife {
   // the grid of life cells, where an '0' represents a dead cell and a '1' living one
   private int[][] grid;
 
-  public GameOfLife(final int[][] initialGrid) {
+  // Set of rule applied in this Game of Life
+  private final EnumSet<Rule> ruleSet;
+
+  public GameOfLife(final int[][] initialGrid, EnumSet<Rule> rulesToBeApplied) {
     validateGrid(initialGrid);
 
     dimX = initialGrid.length;
     dimY = initialGrid[0].length;
     grid = copyGrid(initialGrid);
+    ruleSet = rulesToBeApplied;
   }
 
   /**
@@ -69,13 +75,9 @@ public class GameOfLife {
     // walk grid and apply the rules on each cell
     for (int xCoord = 0; (xCoord < dimX); ++xCoord) {
       for (int yCoord = 0; (yCoord < dimY); ++yCoord) {
-        int livingNeigborsCount = countLivingNeighborCells(xCoord, yCoord);
-
-        for (final Rule rule : Rule.values()) {
-          if (rule.applies(livingNeigborsCount)) {
+        for (final Rule rule : ruleSet) {
+          if (rule.applies(countLivingNeighborCells(xCoord, yCoord))) {
             newState[xCoord][yCoord] = rule.getResultingCellState();
-            // if a rule applies, finish evaluation!
-            break;
           }
         }
       }
