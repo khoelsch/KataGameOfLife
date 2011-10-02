@@ -12,21 +12,13 @@ public class GameOfLifeTest {
 
   private static void assertGridsAreEqual(int[][] expected, int[][] actual) {
     for (int index = 0; index<actual.length; ++index) {
-      Assert.assertArrayEquals("Not equal at line index [" + index + "]", expected[index], actual[index]);
+      Assert.assertArrayEquals("Not equal at X coordinate [" + index + "]", expected[index], actual[index]);
     }
   }
 
   @After
   public void tearDown() {
     gol = null;
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void properConstructionInvalidGrid() {
-     int[][] grid = {{0, 0, 0},
-                     {0, 0, 0},
-                     {0, 0}};
-    gol = new GameOfLife(grid);
   }
 
   @Test
@@ -70,6 +62,40 @@ public class GameOfLifeTest {
                        {0, 0, 0}};
 
     int[][] expected = {{0, 0, 0},
+                        {0, 0, 0},
+                        {0, 0, 0}};
+
+    gol = new GameOfLife(initial);
+    gol.iterate();
+    int[][] actual = gol.getGrid();
+
+    assertGridsAreEqual(expected, actual);
+  }
+
+  @Test
+  public void ruleOne_04() {
+    int[][] initial = {{1, 0, 1},
+                       {0, 1, 0},
+                       {1, 0, 1}};
+
+    int[][] expected = {{0, 0, 0},
+                        {0, 1, 0},
+                        {0, 0, 0}};
+
+    gol = new GameOfLife(initial);
+    gol.iterate();
+    int[][] actual = gol.getGrid();
+
+    assertGridsAreEqual(expected, actual);
+  }
+
+  /*@Test
+  public void ruleTwo_01() {
+    int[][] initial = {{0, 0, 0},
+                       {0, 1, 0},
+                       {0, 0, 0}};
+
+    int[][] expected = {{0, 0, 0},
                         {0, 1, 1},
                         {0, 0, 0}};
 
@@ -78,6 +104,18 @@ public class GameOfLifeTest {
     int[][] actual = gol.getGrid();
 
     assertGridsAreEqual(expected, actual);
+  }*/
+
+  //
+  // Tests, other than "rule tests"
+  //
+
+  @Test(expected = IllegalArgumentException.class)
+  public void properConstructionInvalidGrid() {
+     int[][] grid = {{0, 0, 0},
+                     {0, 0, 0},
+                     {0, 0}};
+    gol = new GameOfLife(grid);
   }
 
   @Test

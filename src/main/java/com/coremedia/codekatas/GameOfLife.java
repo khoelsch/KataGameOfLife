@@ -9,10 +9,15 @@ public class GameOfLife {
   public enum Rule {
     RULE_ONE(0) {
       // "Any live cell with fewer than two live neighbors dies, as if caused by underpopulation."
-      public boolean applies(int livingNeighbors) { return (livingNeighbors < 2); };
-    };
+      public boolean applies(final int livingNeighbors) { return (livingNeighbors < 2); };
+    }/*,
 
-    private int resultingState;
+    RULE_TWO(0) {
+      // "Any live cell with more than three live neighbours dies, as if by overcrowding."
+      public boolean applies(int livingNeighbors) { return (livingNeighbors > 3); };
+    }*/;
+
+    private final int resultingState;
 
     //
     /**
@@ -33,7 +38,7 @@ public class GameOfLife {
      * @param livingNeighbors total number of living cells surrounding the current cell
      * @return TRUE if the rule is valid for the number of 'livingNeighbors', FALSE otherwise
      */
-     public abstract boolean applies(int livingNeighbors);
+     public abstract boolean applies(final int livingNeighbors);
 
      public int getResultingCellState() { return this.resultingState; };
   }
@@ -59,36 +64,50 @@ public class GameOfLife {
    * Performs one life cycle iteration according to rules.
    */
   public void iterate() {
+    int[][] newState = copyGrid(grid);
+
     // walk grid and apply the rules on each cell
     for (int xCoord = 0; (xCoord < dimX); ++xCoord) {
-      for (int yCoord = 0; (yCoord < dimY); ++yCoord ) {
-        int livingNeigbors = countLivingNeighborCells(xCoord, yCoord);
+      for (int yCoord = 0; (yCoord < dimY); ++yCoord) {
+        int livingNeigborsCount = countLivingNeighborCells(xCoord, yCoord);
 
-        Rule rule = Rule.RULE_ONE;
-        if ( rule.applies(livingNeigbors) ) {
-          grid[xCoord][yCoord] = rule.getResultingCellState();
+        for (final Rule rule : Rule.values()) {
+          if (rule.applies(livingNeigborsCount)) {
+            newState[xCoord][yCoord] = rule.getResultingCellState();
+            // if a rule applies, finish evaluation!
+            break;
+          }
         }
       }
     }
+
+    grid = newState;
   }
 
+  // count the living neighbor cells of the current cell, determined by
+  // 'xCoord' and 'yCoord'
   private int countLivingNeighborCells(final int xCoord, final int yCoord) {
-    // count the living neighbor cells of the current cell
     int livingNeigbors = 0;
-    // "run around cell"
+
+    // scan 3x3 matrix around current cell
+    // (from top left to bottom right)
     for (int xOffset = -1; xOffset<=1; ++xOffset) {
       for (int yOffset = -1; yOffset<=1; ++yOffset) {
 
         int xIndex = xOffset + xCoord;
         int yIndex = yOffset + yCoord;
 
-        // ignore cells outside the grid
-        if (!validGridCoords(xIndex, yIndex)) {
+        // Skip current cell, if
+        //   a) cell lies outside the grid or
+        //   b) current cell itself is to be count
+        if (!validGridCoords(xIndex, yIndex)
+                || (xIndex == xCoord && yIndex == yCoord)) {
           continue;
         }
 
-        if (grid[xIndex][yIndex] == 1)
-        ++livingNeigbors;
+        if (grid[xIndex][yIndex] == 1) {
+          ++livingNeigbors;
+        }
       }
     }
     return livingNeigbors;
