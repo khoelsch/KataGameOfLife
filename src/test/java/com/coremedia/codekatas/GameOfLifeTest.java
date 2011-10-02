@@ -219,6 +219,86 @@ public class GameOfLifeTest {
     assertGridsAreEqual(expected, gol.getGrid());
   }
 
+  @Test
+  public void ruleFour_SingleIteration_01() {
+    int[][] initial = {{0, 0, 0},
+                       {0, 0, 0},
+                       {0, 0, 0}};
+
+    int[][] expected = {{0, 0, 0},
+                        {0, 0, 0},
+                        {0, 0, 0}};
+
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_FOUR));
+    gol.iterate();
+
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
+
+  @Test
+  public void ruleFour_SingleIteration_02() {
+    int[][] initial = {{1, 1, 1},
+                       {0, 0, 0},
+                       {0, 0, 0}};
+
+    int[][] expected = {{1, 1, 1},
+                        {0, 1, 0},
+                        {0, 0, 0}};
+
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_FOUR));
+    gol.iterate();
+
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
+
+  @Test
+  public void ruleFour_SingleIteration_03() {
+    int[][] initial = {{0, 0, 0},
+                       {0, 0, 1},
+                       {0, 1, 1}};
+
+    int[][] expected = {{0, 0, 0},
+                        {0, 1, 1},
+                        {0, 1, 1}};
+
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_FOUR));
+    gol.iterate();
+
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
+
+  @Test
+  public void ruleFour_SingleIteration_04() {
+    int[][] initial = {{0, 1, 0},
+                       {0, 0, 0},
+                       {1, 1, 0}};
+
+    int[][] expected = {{0, 1, 0},
+                        {1, 1, 0},
+                        {1, 1, 0}};
+
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_FOUR));
+    gol.iterate();
+
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
+
+  @Test
+  public void ruleFour_SingleIteration_05() {
+    int[][] initial = {{1, 0, 1},
+                       {0, 0, 0},
+                       {1, 0, 0}};
+
+    int[][] expected = {{1, 0, 1},
+                        {0, 1, 0},
+                        {1, 0, 0}};
+
+    gol = new GameOfLife(initial, EnumSet.of(Rule.RULE_FOUR));
+    gol.iterate();
+
+    assertGridsAreEqual(expected, gol.getGrid());
+  }
+
   //
   // Tests, other than "rule tests"
   //

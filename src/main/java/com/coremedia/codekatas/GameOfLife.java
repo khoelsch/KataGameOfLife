@@ -29,6 +29,14 @@ public class GameOfLife {
         return currentCellState == applicationCellState
                 && (livingNeighbors == 2 || livingNeighbors == 3);
       }
+    },
+
+    // "Any dead cell with exactly three live neighbours becomes a live cell."
+    RULE_FOUR(0, 1) {
+      public boolean applies(final int currentCellState, int livingNeighbors) {
+        return currentCellState == applicationCellState
+                && livingNeighbors == 3;
+      }
     };
 
     protected final int applicationCellState;
@@ -37,8 +45,9 @@ public class GameOfLife {
     /**
      * Constructor.
      *
-     * @param applicationCellState the state of the cell, on which the rule can be applied
-     * @param resultingCellState   the life state of the cell, if the rule can be applied
+     * @param applicationCellState the state that the current life cell must have, so that
+     *                             the rule can be applied
+     * @param resultingCellState   the state the current cell gets, if the rule can be applied
      */
     Rule(final int applicationCellState, final int resultingCellState) {
       this.applicationCellState = applicationCellState;
