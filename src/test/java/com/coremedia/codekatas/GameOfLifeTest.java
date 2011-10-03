@@ -24,7 +24,7 @@ public class GameOfLifeTest {
   }
 
   //
-  // Tests for testing only ONE rule at a time
+  // Testing only ONE rule at a time
   //
 
   @Test
@@ -298,6 +298,11 @@ public class GameOfLifeTest {
 
     assertGridsAreEqual(expected, gol.getGrid());
   }
+
+  //
+  // Testing ALL rules together
+  //
+
 
   //
   // Tests, other than "rule tests"

@@ -88,7 +88,7 @@ public class GameOfLife {
     dimX = initialGrid.length;
     dimY = initialGrid[0].length;
     grid = copyGrid(initialGrid);
-    ruleSet = rulesToBeApplied;
+    ruleSet = EnumSet.copyOf(rulesToBeApplied);
   }
 
   /**
