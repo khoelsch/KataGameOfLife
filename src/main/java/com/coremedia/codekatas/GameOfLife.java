@@ -27,7 +27,8 @@ public class GameOfLife {
       for (int col = 0; col < field[row].length; col++) {
         int currentCell = field[row][col];
         int liveNeighbours = countLivingNeighbours(row, col);
-        // result
+
+        // 1. Rule
         if (liveNeighbours < 2 && currentCell == 1) {
           // die!
           targetField[row][col] = 0;
@@ -55,8 +56,15 @@ public class GameOfLife {
     }
 
     // check neighbours in same row
+    if (col - 1 > 0 && cellAt(row, col-1) == 1) {
+      liveNeighbours++;
+    }
+    if (col + 1 < field[0].length && cellAt(row, col+1) == 1) {
+      liveNeighbours++;
+    }
 
-    if (row + 1 < field.length - 1) {
+
+    if (row + 1 < field.length) {
       // check neighbours of row below
        // check neighbours in first row
       if (col - 1 > 0 && cellAt(row + 1, col - 1) == 1) {
